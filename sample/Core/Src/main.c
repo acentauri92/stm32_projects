@@ -18,10 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "stm32f4xx_hal_rcc.h"
-#include "stm32f4xx_hal_pwr_ex.h"
-#include "stm32_hal_legacy.h"
-#include "stm32f446xx.h"
+#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -101,7 +98,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    printf()
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
