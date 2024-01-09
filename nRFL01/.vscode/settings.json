@@ -1,0 +1,10 @@
+{
+    "cortex-debug.gdbPath": "/home/dheeraj/stm32/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gdb",
+    "cortex-debug.JLinkGDBServerPath": "/usr/local/bin/JLinkGDBServer",
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "main.h": "c",
+        "stdlib.h": "c",
+        "freertos.h": "c"
+    }
+}

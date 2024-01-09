@@ -7,21 +7,21 @@
         {
             "name": "JLink Debug",
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/sample/build/sample.elf",
+            "executable": "${workspaceFolder}/build/nRFL01.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "jlink",
             "device": "STM32F446RE",
             "interface": "swd",
             "runToEntryPoint": "main",      // else it starts at reset handler - not interested
-            "preLaunchTask": "Build all",   // configured in tasks.json
+            "preLaunchTask": "JFlash",   // configured in tasks.json
             "svdFile": "/home/dheeraj/stm32/STM32F4_svd_V1.9/STM32F446.svd",                  // Include svd to watch device peripherals
             "showDevDebugOutput": "raw", 
             "swoConfig":
             {
                 "enabled": true,
-                "cpuFrequency": 160000000,
-                "swoFrequency": 4000000,
+                "cpuFrequency": 84000000,
+                "swoFrequency": 1000000,
                 "source": "probe",
                 "decoders":
                 [
