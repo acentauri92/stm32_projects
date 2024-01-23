@@ -5,6 +5,7 @@
     "files.associations": {
         "main.h": "c",
         "stdlib.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "stdint.h": "c"
     }
 }

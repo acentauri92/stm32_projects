@@ -1,43 +1,77 @@
 #include "nRF24L01.h"
 #include "main.h"
 
-#define SPI_WRITE       1U
-#define SPI_READ        0U
-#define SPI_RW_MODE_BIT 5U
-
-#define SET_SPI_RW_MODE(x) ( (x) <<  (SPI_RW_MODE_BIT) )
-
-
 extern SPI_HandleTypeDef hspi2;
 
-// HAL_StatusTypeDef nrf24_write_register(uint8_t reg, uint8_t* data){
-//     uint8_t buffer[2], status;
+HAL_StatusTypeDef nRF24WriteRegister(uint8_t reg, uint8_t data){
+    uint8_t buffer[2];
 
-//     /*Set the 5th bit to 1 indicating write mode*/
-//     uint8_t write_commad = ( 1 << 5) | reg;
+    /*Set the 5th bit to 1 indicating write mode*/
+    buffer[0] = (1 << 5) | reg;
+    buffer[1] = data;
   
-//     /*Chip select*/
-//     HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
-//     HAL_SPI_Transmit(&hspi2, &write_commad, 1, 100);
-//     HAL_SPI_Transmit(&hspi2, buffer, 2, 100);
+    /*Chip select*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
 
-//     /*Chip unselect*/
-//     HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi2, buffer, 2, 100);
 
-// }
+    /*Chip unselect*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
+
+    return HAL_OK;
+
+}
+
+HAL_StatusTypeDef nRF24WriteRegisterMultiple(uint8_t reg, uint8_t* data, int size){
+    uint8_t buffer;
+
+    /*Set the 5th bit to 1 indicating write mode*/
+    buffer = ( 1 << 5) | reg;
+
+    /*Chip select*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+
+    /*Send register address*/
+    HAL_SPI_Transmit(&hspi2, &buffer, 1, 100);
+
+    HAL_SPI_Transmit(&hspi2, data, size, 100);
+
+    /*Chip unselect*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
+    
+    return HAL_OK;
+}
 
 
-// HAL_StatusTypeDef nrf24_read_register(uint8_t reg, uint8_t* data){
-//     uint8_t buffer;
+HAL_StatusTypeDef nRF24ReadRegister(uint8_t reg, uint8_t* data){
+    
+    /*Chip select*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi2, &reg, 1, 100);
+    HAL_SPI_Receive(&hspi2, data, 1, 100);
+     /*Chip unselect*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
 
-//     /*Set the 5th bit to 0 indicating read mode*/
-//     buffer = ~( 1 << 5) & reg;
+    return HAL_OK;
+}
 
-//     /*Chip select*/
-//     HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
-//     HAL_SPI_Transmit(&hspi2, buffer, 1, 100);
-//     HAL_SPI_Receive(&hspi2, data, 1, 100);
-//      /*Chip unselect*/
-//     HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
+HAL_StatusTypeDef nRF24ReadRegisterMultiple(uint8_t reg, uint8_t* data, int size){
+    
+    /*Chip select*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi2, &reg, 1, 100);
+    HAL_SPI_Receive(&hspi2, data, size, 100);
+     /*Chip unselect*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
+
+    return HAL_OK;
  
-// }
+}
+
+void nRF24SendCommand(uint8_t command){
+    /*Chip select*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi2, &command, 1, 100);
+     /*Chip unselect*/
+    HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);   
+}
